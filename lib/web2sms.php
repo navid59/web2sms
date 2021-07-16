@@ -2,7 +2,7 @@
 abstract class Web2sms {
     // Error code defination
     const INTERNAL_WEB2SMS_ERROR                                = 0x20000001; // 536870913 -> Internal web2SMS error 
-    const NO_AVAILABLE_ACCOUNT_FOR_THE_CALLING_IP               = 0x10000001; // 268435457 -> No available account for the calling IP                             
+    const E_AUTH_REQUIRED                                       = 0x10000001; // 268435457 -> No available account for the calling IP                             
     const ASSOCIATED_ACCOUNT_IS_DISABLED                        = 0x10000007; // 268435463 -> Associated account is disabled  
     const ASSOCIATED_ACCOUNT_IS_MISSCONFIGURED                  = 0x10000006; // 268435462 -> Associated account is missconfigured                                  
     const INTERNAL_WEB2SMS_ERROR_WHILE_CREATING_SMS_SENDER      = 0x10000008; // 268435464 -> Internal web2SMS error while creating SMS Sender                                   
@@ -15,10 +15,13 @@ abstract class Web2sms {
     const SMS_MESSAGE_IS_EMPTY_THE_EMPTY_MSG_ARE_NOT_ALLOWED    = 0x10000003; // 268435459 -> Parameter `message` is empty! Empty message are not allowed 
     const INTERNAL_WEB2SMS_ERROR_WHILE_SCHEDULING_A_SMS         = 0x10000009; // 268435465 -> Internal web2SMS error while scheduling a SMS
     
+    const SMS_METHOD         = "POST";
+    const SMS_URL            = "/prepaid/message";
+
     public $apiKey;
     public $secretKey;
     public $username;
-    public $message;
+    public $messages;
 
 
     // "nonce" => time() // Current LINUX Timestamp
@@ -27,28 +30,43 @@ abstract class Web2sms {
     }
     
     // Send request json to SMS
-    public function sendRequest($jsonStr) {
-        if(!isset($this->apiKey) || is_null($this->apiKey)) {
-            throw new \Exception('INVALID_APIKEY');
-            exit;
-        }
+    public function sendRequest($smsItem) {
+       $string = $this->apiKey . $smsItem->nonce . self::SMS_METHOD . self::SMS_URL . $smsItem->sender .
+       $smsItem->recipient . $smsItem->body . $smsItem->visibleMessage . $smsItem->scheduleDatetime .
+       $smsItem->validityDatetime . $smsItem->callbackUrl . $this->secretKey;
 
-        echo "<pre>";
-        die(print_r($jsonStr));
+       $signature = hash('sha512', $string);
 
+       $data = array(
+        "apiKey" => $this->apiKey,
+        "sender" => $smsItem->sender,
+        "recipient" => $smsItem->recipient,
+        "message" => $smsItem->body,
+        "scheduleDatetime" => $smsItem->scheduleDatetime,
+        "validityDatetime" => $smsItem->validityDatetime,
+        "callbackUrl" => $smsItem->callbackUrl,
+        "userData" => "",
+        "visibleMessage" => $smsItem->visibleMessage,
+        "nonce" => $smsItem->nonce);
+
+        
         $url = 'https://www.web2sms.ro/prepaid/message';
         $ch = curl_init($url);
         
-        $payload = $jsonStr; // json DATA
+        $payload = json_encode($data); // json DATA
+        // die($payload);
 
         // Attach encoded JSON string to the POST fields
         curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
 
+        // Set to include the header in the output.
+        curl_setopt($ch, CURLOPT_HEADER, true);
+
         // Set the content type to application/json
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type : application/json'));
-        
-        // Set the authorization info
-        curl_setopt($ch, CURLOPT_USERPWD, $this->username . ":" . $this->apiKey);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Content-length: '.strlen($payload)));
+
+        // Set the authorization signature
+        curl_setopt($ch, CURLOPT_USERPWD, $this->apiKey . ":" . $signature);
 
         // Return response instead of outputting
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -61,38 +79,58 @@ abstract class Web2sms {
                 case 200:  # OK
                     $arr = array(
                         'status'  => 1,
-                        'data'    => json_decode($result)
+                        'code'    => $http_code,
+                        'msg'     => "SMS sent successfully",
+                        'data'    => "".json_decode($result)
                     );
                 break;
                 case 404:  # Not Found 
                     $arr = array(
                         'status'  => 0,
+                        'code'    => $http_code,
+                        'msg'     => 'Not Found',
                         'data'    => json_decode($result)
                     );
                 break;
                 case 400:  # Bad Request
                     $arr = array(
                         'status'  => 0,
+                        'code'    => $http_code,
+                        'msg'     => 'Bad Request',
                         'data'    => json_decode($result)
                     );
                 break;
                 case 405:  # Method Not Allowed
                     $arr = array(
                         'status'  => 0,
+                        'code'    => $http_code,
+                        'msg'     => 'Method Not Allowed',
+                        'data'    => json_decode($result)
+                    );
+                break;
+                case 415:  # Unsupported Media Type.
+                    $arr = array(
+                        'status'  => 0,
+                        'code'    => $http_code,
+                        'msg'     => 'Unsupported Media Type.',
                         'data'    => json_decode($result)
                     );
                 break;
                 default:
                     $arr = array(
                         'status'  => 0,
-                        'data'    => json_decode($result)
+                        'code'    => $http_code,
+                        'msg'     => null,
+                        'data'    => $http_code."_".json_decode($result)
                     );
                 break;
             }
         } else {
             $arr = array(
-                'status'  => 0,
-                'message' => "Opps! There is some problem, you are not able to send data!!!"
+                'status' => 0,
+                'code'   => $http_code,
+                'msg'    => null,
+                'data'   => json_decode($result)
             );
         }
         
