@@ -4,11 +4,13 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once('lib/sendSMS.php');
+use Web2sms\sendSMS;
+
 $sendSMS = new sendSMS();
 
-$sendSMS->apiKey    = ''; // your api key here
-$sendSMS->secretKey = ''; // your secret key here
-$sendSMS->username  = ''; // Your Username here
+$sendSMS->apiKey    = '';
+$sendSMS->secretKey = '';
+$sendSMS->username  = '';
 
 $sendSMS->messages[]  = [
                     'sender'            => null,                            // who send the SMS             // Optional

@@ -1,4 +1,6 @@
 <?php
+namespace Web2sms;
+
 abstract class Web2sms {
     // Error code defination
     const INTERNAL_WEB2SMS_ERROR                                = 0x20000001; // 536870913 -> Internal web2SMS error 
