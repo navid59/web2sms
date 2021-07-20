@@ -26,46 +26,48 @@ Run the following command from root of your project
 
     ```php
 
-    ...
-    
-    require_once('lib/sendSMS.php');
-    use Web2sms\sendSMS;
+        ...
+        
+        require_once('lib/sendSMS.php');
+        use Web2sms\sendSMS;
 
-    $sendSMS = new sendSMS();
+        $sendSMS = new sendSMS();
 
-    $sendSMS->apiKey    = 'API_KEY_FROM_THE_PLATFORM'; 
-    $sendSMS->secretKey = 'SECRET_KEY_FROM_THE_PLATFORM';
+        $sendSMS->apiKey    = 'API_KEY_FROM_THE_PLATFORM'; 
+        $sendSMS->secretKey = 'SECRET_KEY_FROM_THE_PLATFORM';
 
-    // SMS #1
-    $sendSMS->messages[]  = [
-                        'sender'            => ''          ,            // who send the SMS             // Optional
-                        'recipient'         => '07XXXXXXXX',            // who recive the SMS           // Mandatory
-                        'body'              => 'This is the actual content of SMS nr one',              // Mandatory
-                        'scheduleDatetime'  => 'YYYY-MM-DD 00:00:00',   // Data & Time to send SMS      // Optional
-                        'validityDatetime'  => null,                    // Data & Time of expire SMS    // Optional
-                        'callbackUrl'       => 'YOUR_DOMAIN/PAGE_URL',  // Full callback URL            // Optional    
-                        'userData'          => null,                    // User data                    // Optional
-                        'visibleMessage'    => false                    // false / True                 // Optional
-                        ];
+        // SMS #1
+        $sendSMS->messages[]  = [
+                            'sender'            => ''          ,            // who send the SMS             // Optional
+                            'recipient'         => '07XXXXXXXX',            // who recive the SMS           // Mandatory
+                            'body'              => 'This is the actual content of SMS nr one',              // Mandatory
+                            'scheduleDatetime'  => 'YYYY-MM-DD 00:00:00',   // Data & Time to send SMS      // Optional
+                            'validityDatetime'  => null,                    // Data & Time of expire SMS    // Optional
+                            'callbackUrl'       => 'YOUR_DOMAIN/PAGE_URL',  // Full callback URL            // Optional    
+                            'userData'          => null,                    // User data                    // Optional
+                            'visibleMessage'    => false                    // false / True                 // Optional
+                            ];
 
-    ...
+        ...
 
-    // SMS #N
-    $sendSMS->messages[]  = [
-                        'sender'            => ''          ,            // who send the SMS             // Optional
-                        'recipient'         => '07XXXXXXXX',            // who recive the SMS           // Mandatory
-                        'body'              => 'This is the actual content of SMS nr N'                 // Mandatory
-                        'scheduleDatetime'  => null,                    // Data & Time to send SMS      // Optional
-                        'validityDatetime'  => null,                    // Data & Time of expire SMS    // Optional
-                        'callbackUrl'       => 'YOUR_DOMAIN/PAGE_URL',  // Full callback URL            // Optional    
-                        'userData'          => null,                    // User data                    // Optional
-                        'visibleMessage'    => false                    // false / True                 // Optional
-                        ];
+        // SMS #N
+        $sendSMS->messages[]  = [
+                            'sender'            => ''          ,            // who send the SMS             // Optional
+                            'recipient'         => '07XXXXXXXX',            // who recive the SMS           // Mandatory
+                            'body'              => 'This is the actual content of SMS nr N'                 // Mandatory
+                            'scheduleDatetime'  => null,                    // Data & Time to send SMS      // Optional
+                            'validityDatetime'  => null,                    // Data & Time of expire SMS    // Optional
+                            'callbackUrl'       => 'YOUR_DOMAIN/PAGE_URL',  // Full callback URL            // Optional    
+                            'userData'          => null,                    // User data                    // Optional
+                            'visibleMessage'    => false                    // false / True                 // Optional
+                            ];
 
 
-    $sendSMS->setRequest();
-    $sendSMS->sendSMS();
+        $sendSMS->setRequest();
+        $sendSMS->sendSMS();
 
-    ...
-    
+        ...
+
     ```
+
+
