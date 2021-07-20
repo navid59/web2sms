@@ -1,9 +1,8 @@
 {
     "config" : {
         "url" : "https://www.web2sms.ro/api",
-        "apiKey" : "6997cfcc09caa439fab3d28e466e34a1f96f3eab",
-        "secretKey" : "303ed8f4c1b541464aa15dadf0f9b28099aa7ec0954de53b01a07f8ba2ad951426344c0eafae3b04489bcf456bdb797804105eb913657ed29ab301dd566fdbb9",
-        "username" : "navid@netopia-system.com",
+        "apiKey" : "",
+        "secretKey" : "",
         "validity" : true,
         "callbackUrl" : null
     },

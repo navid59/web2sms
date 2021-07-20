@@ -32,11 +32,6 @@ class SendSMS extends Web2sms{
             exit;
         }
 
-        if(!isset($this->username) || is_null($this->username) || empty($this->username)) {
-            throw new \Exception('INVALID_USER_NAME');
-            exit;
-        }
-
         if(!isset($this->messages) || is_null($this->messages) || empty($this->messages)) {
             throw new \Exception('INVALID_MESSAGE_LIST');
             exit;
@@ -57,8 +52,8 @@ class SendSMS extends Web2sms{
             $message->sender = (isset($msgItem['sender'])  && !empty($msgItem['sender'])) ? $msgItem['sender'] : '' ;
             $message->recipient = $msgItem['recipient'];
             $message->body = $msgItem['body'];
-            $message->scheduleDatetime = (isset($msgItem['scheduleDatetime'])  && !empty($msgItem['scheduleDatetime'])) ? $msgItem['scheduleDatetime'] : '' ;
-            $message->validityDatetime = (isset($msgItem['validityDatetime'])  && !empty($msgItem['validityDatetime'])) ? $msgItem['validityDatetime'] : '' ;
+            $message->scheduleDatetime = (isset($msgItem['scheduleDatetime'])  && !empty($msgItem['scheduleDatetime'])) ? strtotime($msgItem['scheduleDatetime']) : '' ;
+            $message->validityDatetime = (isset($msgItem['validityDatetime'])  && !empty($msgItem['validityDatetime'])) ? strtotime($msgItem['validityDatetime']) : '' ;
             $message->callbackUrl = (isset($msgItem['callbackUrl'])  && !empty($msgItem['callbackUrl'])) ? $msgItem['callbackUrl'] : '' ;
             $message->userData = (isset($msgItem['userData'])  && !empty($msgItem['userData'])) ? $msgItem['userData'] : '' ;
             $message->visibleMessage = (isset($msgItem['visibleMessage'])  && !empty($msgItem['visibleMessage'])) ? $msgItem['visibleMessage'] : '' ;

@@ -17,12 +17,11 @@ abstract class Web2sms {
     const SMS_MESSAGE_IS_EMPTY_THE_EMPTY_MSG_ARE_NOT_ALLOWED    = 0x10000003; // 268435459 -> Parameter `message` is empty! Empty message are not allowed 
     const INTERNAL_WEB2SMS_ERROR_WHILE_SCHEDULING_A_SMS         = 0x10000009; // 268435465 -> Internal web2SMS error while scheduling a SMS
     
-    const SMS_METHOD         = "POST";
-    const SMS_URL            = "/prepaid/message";
+    const SMS_METHOD         = "POST";                          // Mandatory 
+    const SMS_URL            = "/prepaid/message";              // Mandatory
 
     public $apiKey;
     public $secretKey;
-    public $username;
     public $messages;
 
 
@@ -51,7 +50,7 @@ abstract class Web2sms {
         "visibleMessage" => $smsItem->visibleMessage,
         "nonce" => $smsItem->nonce);
 
-        
+
         $url = 'https://www.web2sms.ro/prepaid/message';
         $ch = curl_init($url);
         
@@ -79,6 +78,7 @@ abstract class Web2sms {
         if (!curl_errno($ch)) {
             switch ($http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE)) {
                 case 200:  # OK
+                case 201:
                     $arr = array(
                         'status'  => 1,
                         'code'    => $http_code,
@@ -86,19 +86,35 @@ abstract class Web2sms {
                         'data'    => "".json_decode($result)
                     );
                 break;
-                case 404:  # Not Found 
-                    $arr = array(
-                        'status'  => 0,
-                        'code'    => $http_code,
-                        'msg'     => 'Not Found',
-                        'data'    => json_decode($result)
-                    );
-                break;
                 case 400:  # Bad Request
                     $arr = array(
                         'status'  => 0,
                         'code'    => $http_code,
                         'msg'     => 'Bad Request',
+                        'data'    => json_decode($result)
+                    );
+                break;
+                case 401:  # Unauthorized
+                    $arr = array(
+                        'status'  => 0,
+                        'code'    => $http_code,
+                        'msg'     => 'Authentication token or the authentication token was expired.',
+                        'data'    => json_decode($result)
+                    );
+                break;
+                case 403:  # Forbidden
+                    $arr = array(
+                        'status'  => 0,
+                        'code'    => $http_code,
+                        'msg'     => 'No permission to access the requested resource.',
+                        'data'    => json_decode($result)
+                    );
+                break;
+                case 404:  # Not Found 
+                    $arr = array(
+                        'status'  => 0,
+                        'code'    => $http_code,
+                        'msg'     => 'Not Found',
                         'data'    => json_decode($result)
                     );
                 break;
@@ -110,11 +126,34 @@ abstract class Web2sms {
                         'data'    => json_decode($result)
                     );
                 break;
+                case 409:  # Conflict
+                    $arr = array(
+                        'status'  => 0,
+                        'code'    => $http_code,
+                        'msg'     => 'request could not be completed,there is a conflict.',
+                        'data'    => json_decode($result)
+                    );
+                break;
                 case 415:  # Unsupported Media Type.
                     $arr = array(
                         'status'  => 0,
                         'code'    => $http_code,
                         'msg'     => 'Unsupported Media Type.',
+                        'data'    => json_decode($result)
+                    );
+                break;
+                case 500:  # Internal Server Error.
+                    $arr = array(
+                        'status'  => 0,
+                        'code'    => $http_code,
+                        'msg'     => 'Request was not completed. There is an internal error on the server side.',
+                        'data'    => json_decode($result)
+                    );
+                case 503:  # Service Unavailable.
+                    $arr = array(
+                        'status'  => 0,
+                        'code'    => $http_code,
+                        'msg'     => 'The server was unavailable.',
                         'data'    => json_decode($result)
                     );
                 break;
