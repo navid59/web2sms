@@ -16,8 +16,8 @@ class SendSMS extends Web2sms{
 
     public function sendSMS(){
         foreach($this->validMessageList as $smsItem) {
-            echo $response = $this->sendRequest($smsItem);
-            echo "<hr>";
+            $response = $this->sendRequest($smsItem);
+            return $response;
         }
     }
 

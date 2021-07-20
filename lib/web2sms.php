@@ -1,22 +1,7 @@
 <?php
 namespace Web2sms;
 
-abstract class Web2sms {
-    // Error code defination
-    const INTERNAL_WEB2SMS_ERROR                                = 0x20000001; // 536870913 -> Internal web2SMS error 
-    const E_AUTH_REQUIRED                                       = 0x10000001; // 268435457 -> No available account for the calling IP                             
-    const ASSOCIATED_ACCOUNT_IS_DISABLED                        = 0x10000007; // 268435463 -> Associated account is disabled  
-    const ASSOCIATED_ACCOUNT_IS_MISSCONFIGURED                  = 0x10000006; // 268435462 -> Associated account is missconfigured                                  
-    const INTERNAL_WEB2SMS_ERROR_WHILE_CREATING_SMS_SENDER      = 0x10000008; // 268435464 -> Internal web2SMS error while creating SMS Sender                                   
-    const WRONG_PHONE_NR_FORMAT_OR_OUTOF_VALIDATED_GSM_NETWORK  = 0x10000002; // 268435458 -> Parameter `phone` has a wrong format or it belongs to a GSM.Network that is not configured for the associated account!                                               
-         
-    const PHONE_NUMBER_IS_BLACK_LISTED                          = 0x1000000a; // 268435466 -> Phone number is black listed
-    const OUTOF_GSM_NETWORK_RENGE                               = 0x10000040; // 268435520 -> Phone number belongs to a GSN Network that is not configured for the associated account 
-    const EXCEEDED_MONTHLY_LIMIT_TO_SENDING_SMS                 = 0x10000004; // 268435460 -> You’ve exceeded your monthly limit for SMS sending
-    const WRONG_SCHEDULE_DATE_TIME                              = 0x10000020; // 268435488 -> You are trying to schedule a SMS message outside the configured time interval restrictions
-    const SMS_MESSAGE_IS_EMPTY_THE_EMPTY_MSG_ARE_NOT_ALLOWED    = 0x10000003; // 268435459 -> Parameter `message` is empty! Empty message are not allowed 
-    const INTERNAL_WEB2SMS_ERROR_WHILE_SCHEDULING_A_SMS         = 0x10000009; // 268435465 -> Internal web2SMS error while scheduling a SMS
-    
+abstract class Web2sms {    
     const SMS_METHOD         = "POST";                          // Mandatory 
     const SMS_URL            = "/prepaid/message";              // Mandatory
 
@@ -57,20 +42,29 @@ abstract class Web2sms {
         $payload = json_encode($data); // json DATA
         // die($payload);
 
-        // Attach encoded JSON string to the POST fields
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-
         // Set to include the header in the output.
         curl_setopt($ch, CURLOPT_HEADER, true);
-
-        // Set the content type to application/json
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Content-length: '.strlen($payload)));
 
         // Set the authorization signature
         curl_setopt($ch, CURLOPT_USERPWD, $this->apiKey . ":" . $signature);
 
+        // Set the content type to application/json
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Content-length: '.strlen($payload)));
+
+        // Regular HTTP POST
+        curl_setopt($ch, CURLOPT_POST, true);
+
+        // Attach encoded JSON string to the POST fields
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+
+        curl_setopt($ch, CURLOPT_FAILONERROR, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);  
+
         // Return response instead of outputting
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+ 
 
         // Execute the POST request
         $result = curl_exec($ch);
@@ -83,7 +77,7 @@ abstract class Web2sms {
                         'status'  => 1,
                         'code'    => $http_code,
                         'msg'     => "SMS sent successfully",
-                        'data'    => "".json_decode($result)
+                        'data'    => $this->getSpecificData($result, $http_code)
                     );
                 break;
                 case 400:  # Bad Request
@@ -91,7 +85,7 @@ abstract class Web2sms {
                         'status'  => 0,
                         'code'    => $http_code,
                         'msg'     => 'Bad Request',
-                        'data'    => json_decode($result)
+                        'data'    => $this->getSpecificData($result, $http_code)
                     );
                 break;
                 case 401:  # Unauthorized
@@ -99,7 +93,7 @@ abstract class Web2sms {
                         'status'  => 0,
                         'code'    => $http_code,
                         'msg'     => 'Authentication token or the authentication token was expired.',
-                        'data'    => json_decode($result)
+                        'data'    => $this->getSpecificData($result, $http_code)
                     );
                 break;
                 case 403:  # Forbidden
@@ -107,7 +101,7 @@ abstract class Web2sms {
                         'status'  => 0,
                         'code'    => $http_code,
                         'msg'     => 'No permission to access the requested resource.',
-                        'data'    => json_decode($result)
+                        'data'    => $this->getSpecificData($result, $http_code)
                     );
                 break;
                 case 404:  # Not Found 
@@ -115,7 +109,7 @@ abstract class Web2sms {
                         'status'  => 0,
                         'code'    => $http_code,
                         'msg'     => 'Not Found',
-                        'data'    => json_decode($result)
+                        'data'    => $this->getSpecificData($result, $http_code)
                     );
                 break;
                 case 405:  # Method Not Allowed
@@ -123,7 +117,7 @@ abstract class Web2sms {
                         'status'  => 0,
                         'code'    => $http_code,
                         'msg'     => 'Method Not Allowed',
-                        'data'    => json_decode($result)
+                        'data'    => $this->getSpecificData($result, $http_code)
                     );
                 break;
                 case 409:  # Conflict
@@ -131,7 +125,7 @@ abstract class Web2sms {
                         'status'  => 0,
                         'code'    => $http_code,
                         'msg'     => 'request could not be completed,there is a conflict.',
-                        'data'    => json_decode($result)
+                        'data'    => $this->getSpecificData($result, $http_code)
                     );
                 break;
                 case 415:  # Unsupported Media Type.
@@ -139,7 +133,7 @@ abstract class Web2sms {
                         'status'  => 0,
                         'code'    => $http_code,
                         'msg'     => 'Unsupported Media Type.',
-                        'data'    => json_decode($result)
+                        'data'    => $this->getSpecificData($result, $http_code)
                     );
                 break;
                 case 500:  # Internal Server Error.
@@ -147,14 +141,14 @@ abstract class Web2sms {
                         'status'  => 0,
                         'code'    => $http_code,
                         'msg'     => 'Request was not completed. There is an internal error on the server side.',
-                        'data'    => json_decode($result)
+                        'data'    => $this->getSpecificData($result, $http_code)
                     );
                 case 503:  # Service Unavailable.
                     $arr = array(
                         'status'  => 0,
                         'code'    => $http_code,
                         'msg'     => 'The server was unavailable.',
-                        'data'    => json_decode($result)
+                        'data'    => $this->getSpecificData($result, $http_code)
                     );
                 break;
                 default:
@@ -162,7 +156,7 @@ abstract class Web2sms {
                         'status'  => 0,
                         'code'    => $http_code,
                         'msg'     => null,
-                        'data'    => $http_code."_".json_decode($result)
+                        'data'    => $this->getSpecificData($result, $http_code)
                     );
                 break;
             }
@@ -171,14 +165,31 @@ abstract class Web2sms {
                 'status' => 0,
                 'code'   => $http_code,
                 'msg'    => null,
-                'data'   => json_decode($result)
+                'data'   => $result
             );
         }
         
         // Close cURL resource
         curl_close($ch);
         
-        $finalResult = json_encode($arr, JSON_FORCE_OBJECT);
+        $finalResult = json_encode($arr);
+        die(print_r($finalResult));
         return $finalResult;
+    }
+
+    public function getSpecificData($data, $code) {
+        if($code >= 200 && $code < 300) {
+            if (($pos = strpos($data, '{"id":"')) !== false) { 
+                $pureJsonData = substr($data, $pos);
+                $pureArrData = json_decode($pureJsonData);
+                return $pureArrData;
+            }
+        }else {
+            if (($pos = strpos($data, '{"error":{')) !== false) { 
+                $pureJsonData = substr($data, $pos);
+                $pureArrData = json_decode($pureJsonData);
+                return $pureArrData;
+            }
+        }
     }
 }
