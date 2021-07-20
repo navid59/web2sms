@@ -51,10 +51,10 @@ You can install the library via [Composer](http://getcomposer.org/). Run the fol
         // SMS #1
         $sendSMS->messages[]  = [
                             'sender'            => ''          ,          // who send the SMS             // Optional
-                            'recipient'         => '07XXXXXXXX',          // who recive the SMS           // Mandatory
+                            'recipient'         => '07XXXXXXXX',          // who receive the SMS          // Mandatory
                             'body'              => 'This is the actual content of SMS nr one',            // Mandatory
-                            'scheduleDatetime'  => 'YYYY-MM-DD 00:00:00', // Data & Time to send SMS      // Optional
-                            'validityDatetime'  => null,                  // Data & Time of expire SMS    // Optional
+                            'scheduleDatetime'  => 'YYYY-MM-DD 10:20:10', // Date & Time to send SMS      // Optional
+                            'validityDatetime'  => null,                  // Date & Time of expire SMS    // Optional
                             'callbackUrl'       => 'DOMAIN/XXX/',         // Full callback URL            // Optional    
                             'userData'          => null,                  // User data                    // Optional
                             'visibleMessage'    => false                  // false / True                 // Optional
@@ -65,10 +65,10 @@ You can install the library via [Composer](http://getcomposer.org/). Run the fol
         // SMS #N
         $sendSMS->messages[]  = [
                             'sender'            => ''          ,          // who send the SMS             // Optional
-                            'recipient'         => '07XXXXXXXX',          // who recive the SMS           // Mandatory
+                            'recipient'         => '07XXXXXXXX',          // who receive the SMS          // Mandatory
                             'body'              => 'This is the actual content of SMS nr N'               // Mandatory
-                            'scheduleDatetime'  => null,                  // Data & Time to send SMS      // Optional
-                            'validityDatetime'  => null,                  // Data & Time of expire SMS    // Optional
+                            'scheduleDatetime'  => null,                  // Date & Time to send SMS      // Optional
+                            'validityDatetime'  => null,                  // Date & Time of expire SMS    // Optional
                             'callbackUrl'       => 'DOMAIN/XXX/',         // Full callback URL            // Optional    
                             'userData'          => null,                  // User data                    // Optional
                             'visibleMessage'    => false                  // false / True                 // Optional
