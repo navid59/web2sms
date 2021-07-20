@@ -11,12 +11,15 @@ applications written in the PHP language.
 ## Requirements
 PHP 5.7.0 and later.
 
+## Compatibility
+PHP 8.0.8
+
 ## Installation 
 
 You can install the library via [Composer](http://getcomposer.org/). Run the following command:
 
     ```
-    composer XXXXXXXXXXXX
+        composer XXXXXXXXXXXX
     ```
 
 ### API URL
