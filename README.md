@@ -22,10 +22,9 @@ Run the following command from root of your project
     
 ### Example    
 
-##### An example of Send SMS in Laravel 
+#### An example of Send SMS in Laravel 
 
     ```php
-
         ...
         
         require_once('lib/sendSMS.php');
@@ -67,7 +66,6 @@ Run the following command from root of your project
         $sendSMS->sendSMS();
 
         ...
-
     ```
 
 #### Example of verify-auth
