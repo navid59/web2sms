@@ -82,21 +82,21 @@ You can install the library via [Composer](http://getcomposer.org/). Run the fol
     ```
 
 ### Error codes defination
-```
-    536870913 -> Internal web2SMS error 
-    268435457 -> No available account for the calling IP                             
-    268435463 -> Associated account is disabled  
-    268435462 -> Associated account is missconfigured                                  
-    268435464 -> Internal web2SMS error while creating SMS Sender                                   
-    268435458 -> Parameter `phone` has a wrong format or it belongs to a GSM.Network that is not configured for the associated account!                                               
+
+    * **536870913** -> Internal web2SMS error 
+    * **268435457** -> No available account for the calling IP                             
+    * **268435463** -> Associated account is disabled  
+    * **268435462** -> Associated account is missconfigured                                  
+    * **268435464** -> Internal web2SMS error while creating SMS Sender                                   
+    * **268435458** -> Parameter `phone` has a wrong format or it belongs to a GSM.Network that is not configured for the associated account!                                               
          
-    268435466 -> Phone number is black listed
-    268435520 -> Phone number belongs to a GSN Network that is not configured for the associated account 
-    268435460 -> You’ve exceeded your monthly limit for SMS sending
-    268435488 -> You are trying to schedule a SMS message outside the configured time interval restrictions
-    268435459 -> Parameter `message` is empty! Empty message are not allowed 
-    268435465 -> Internal web2SMS error while scheduling a SMS
-```
+    * **268435466** -> Phone number is black listed
+    * **268435520** -> Phone number belongs to a GSN Network that is not configured for the associated account 
+    * **268435460** -> You’ve exceeded your monthly limit for SMS sending
+    * **268435488** -> You are trying to schedule a SMS message outside the configured time interval restrictions
+    * **268435459** -> Parameter `message` is empty! Empty message are not allowed 
+    * **268435465** -> Internal web2SMS error while scheduling a SMS
+
 
 ##### When / Why send SMS
 Now days sending SMS to the customers helping any business to increase customers retention.
