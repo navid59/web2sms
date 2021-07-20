@@ -70,4 +70,19 @@ Run the following command from root of your project
 
     ```
 
+#### Example of verify-auth
+
+    ```php
+        $verifyAuth = new VerifyAuth();
+        $verifyAuth->apiKey              = 'ApiKey_GENERATE-YOUR-KEY-FROM-MobilPay-AND-USE-IT-HEAR';
+        $verifyAuth->authenticationToken = 'YOUR-UNIQUE-AUTHENTICATION-TOKEN-PER-REQUEST';
+        $verifyAuth->ntpID               = 'THE-UNIQUE-TRANSACTION-ID';
+        $verifyAuth->paRes               = 'THE-paRes-ID-WHAT-YOU-RECIVE-IT-FROM-THE-BANK';
+        $verifyAuth->isLive              = false;       // FALSE for SANDBOX & TRUE for LIVE mode
+
+        $jsonAuthParam = $verifyAuth->setVerifyAuth();  // To set parameters for /payment/card/verify-auth
+
+        $paymentResult = $verifyAuth->sendRequestVerifyAuth($jsonAuthParam);  // To send request to /payment/card/verify-auth
+
+    ```
 
