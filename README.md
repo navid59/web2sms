@@ -18,9 +18,9 @@ PHP 8.0.8
 
 You can install the library via [Composer](http://getcomposer.org/). Run the following command:
 
-    ```
-        composer XXXXXXXXXXXX
-    ```
+```
+    composer web2sms
+```
 
 ### API URL
 <https://www.web2sms.ro/prepaid/message/>
@@ -52,7 +52,7 @@ You can install the library via [Composer](http://getcomposer.org/). Run the fol
         $sendSMS->messages[]  = [
                             'sender'            => ''          ,          // who send the SMS             // Optional
                             'recipient'         => '07XXXXXXXX',          // who recive the SMS           // Mandatory
-                            'body'              => 'This is the actual content of SMS nr one',              // Mandatory
+                            'body'              => 'This is the actual content of SMS nr one',            // Mandatory
                             'scheduleDatetime'  => 'YYYY-MM-DD 00:00:00', // Data & Time to send SMS      // Optional
                             'validityDatetime'  => null,                  // Data & Time of expire SMS    // Optional
                             'callbackUrl'       => 'DOMAIN/XXX/',         // Full callback URL            // Optional    
@@ -66,7 +66,7 @@ You can install the library via [Composer](http://getcomposer.org/). Run the fol
         $sendSMS->messages[]  = [
                             'sender'            => ''          ,          // who send the SMS             // Optional
                             'recipient'         => '07XXXXXXXX',          // who recive the SMS           // Mandatory
-                            'body'              => 'This is the actual content of SMS nr N'                 // Mandatory
+                            'body'              => 'This is the actual content of SMS nr N'               // Mandatory
                             'scheduleDatetime'  => null,                  // Data & Time to send SMS      // Optional
                             'validityDatetime'  => null,                  // Data & Time of expire SMS    // Optional
                             'callbackUrl'       => 'DOMAIN/XXX/',         // Full callback URL            // Optional    
