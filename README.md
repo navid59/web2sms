@@ -9,7 +9,6 @@ Run the following command from root of your project
 #### or 
 * add the **"web2sms/xxx"** to your **composer.json** file like the following example
     ```
-
         "require": {
             ...
             "web2sms/xxx": "^1.0",
@@ -24,7 +23,9 @@ Run the following command from root of your project
 ### Example    
 
 ##### An example of Send SMS in Laravel 
+
     ```php
+
     ...
     
     require_once('lib/sendSMS.php');
@@ -66,4 +67,5 @@ Run the following command from root of your project
     $sendSMS->sendSMS();
 
     ...
+    
     ```
