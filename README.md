@@ -25,7 +25,7 @@ Run the following command from root of your project
 
 ##### An example of Send SMS in Laravel 
 <code>
-
+    ```php
     ...
     
     require_once('lib/sendSMS.php');
@@ -67,5 +67,5 @@ Run the following command from root of your project
     $sendSMS->sendSMS();
 
     ...
-    
+    ```
 </code>
