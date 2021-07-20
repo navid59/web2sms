@@ -1,7 +1,9 @@
 <div align="center"><a href="https://www.web2sms.ro"><img alt="Parsedown" src="https://www.web2sms.ro/assets/themes/public/images/front/logo.png" /></a></div>
 
 # WEB2SMS SRL
-## WEB2SMS Composer Introduction
+### WEB2SMS Composer
+
+## Introduction
 
 The WEB2SMS PHP library provides easy access to the send SMS via WEB2SMS API from any
 applications written in the PHP language.
@@ -10,7 +12,8 @@ applications written in the PHP language.
 PHP 5.7.0 and later.
 
 ## Installation 
-    You can install the library via [Composer](http://getcomposer.org/). Run the following command:
+
+You can install the library via [Composer](http://getcomposer.org/). Run the following command:
 
     ```bash
     composer XXXXXXXXXXXX
