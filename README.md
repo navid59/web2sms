@@ -15,7 +15,7 @@ PHP 5.7.0 and later.
 
 You can install the library via [Composer](http://getcomposer.org/). Run the following command:
 
-    ```bash
+    ```
     composer XXXXXXXXXXXX
     ```
 
