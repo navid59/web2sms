@@ -8,7 +8,7 @@ Run the following command from root of your project
 * <code>composer require web2sms/xxx</code>
 #### or 
 * add the **"web2sms/xxx"** to your **composer.json** file like the following example
-    <code>
+    ```
 
         "require": {
             ...
@@ -16,7 +16,7 @@ Run the following command from root of your project
             ...
         }
 
-    </code>
+    ```
     and then run the following command from your Terminal
     
     <code>composer install</code>
@@ -24,7 +24,6 @@ Run the following command from root of your project
 ### Example    
 
 ##### An example of Send SMS in Laravel 
-<code>
     ```php
     ...
     
@@ -68,4 +67,3 @@ Run the following command from root of your project
 
     ...
     ```
-</code>
