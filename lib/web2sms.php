@@ -2,22 +2,34 @@
 namespace Web2sms;
 
 abstract class Web2sms {    
-    const SMS_METHOD         = "POST";                          // Mandatory 
-    const SMS_URL            = "/prepaid/message";              // Mandatory
+    const SMS_METHOD                  = "POST";                          // Mandatory 
+    const SMS_URL_PREPAIID            = "/prepaid/message";              // Mandatory
+    const SMS_URL_POSTPAID            = "/send/message";                 // Mandatory
 
+    public $accountType;
     public $apiKey;
     public $secretKey;
     public $messages;
 
 
-    // "nonce" => time() // Current LINUX Timestamp
     public function __construct(){
         //
     }
     
     // Send request json to SMS
     public function sendRequest($smsItem) {
-       $string = $this->apiKey . $smsItem->nonce . self::SMS_METHOD . self::SMS_URL . $smsItem->sender .
+       switch($this->accountType) {
+        case 'postpaid':
+            $selectedEndpointURL = self::SMS_URL_PREPAIID;
+            break;
+        case 'prepaid' :
+            $selectedEndpointURL = self::SMS_URL_POSTPAID;
+            break;
+        default:
+            $selectedEndpointURL = self::SMS_URL_PREPAIID;
+       }
+        
+       $string = $this->apiKey . $smsItem->nonce . self::SMS_METHOD . $selectedEndpointURL . $smsItem->sender .
        $smsItem->recipient . $smsItem->body . $smsItem->visibleMessage . $smsItem->scheduleDatetime .
        $smsItem->validityDatetime . $smsItem->callbackUrl . $this->secretKey;
 
@@ -36,7 +48,8 @@ abstract class Web2sms {
         "nonce" => $smsItem->nonce);
 
 
-        $url = 'https://www.web2sms.ro/prepaid/message';
+        $url = 'https://www.web2sms.ro/prepaid/message'; // Prepaid
+        // $url = 'https://www.web2sms.ro/send/message'; // Post Paied
         $ch = curl_init($url);
         
         $payload = json_encode($data); // json DATA

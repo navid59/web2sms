@@ -45,8 +45,9 @@ You can install the library via [Composer](http://getcomposer.org/). Run the fol
 
         $sendSMS = new sendSMS();
 
-        $sendSMS->apiKey    = 'API_KEY_FROM_THE_PLATFORM'; 
-        $sendSMS->secretKey = 'SECRET_KEY_FROM_THE_PLATFORM';
+        $sender->accountType = 'prepaid';                                 // postpaid | prepaid          // Optional
+        $sendSMS->apiKey     = 'API_KEY_FROM_THE_PLATFORM';               // ApiKey from Platform        // Mandatory
+        $sendSMS->secretKey  = 'SECRET_KEY_FROM_THE_PLATFORM';            // secretKey from Platform     // Mandatory
 
         // SMS #1
         $sendSMS->messages[]  = [
@@ -80,7 +81,21 @@ You can install the library via [Composer](http://getcomposer.org/). Run the fol
 
         ...
     ```
+    #### Parameters
+    * **accountType :** The "accountType" define the type of your account in WEB2SMS platform. WEB2SMS has two type of account, **"postpaid"** & **"prepaid"** . The **prepaid** defined as default account Type.
+    * **apiKey      :** The "apiKey" is your unique ID to work with WEB2SMS API, this parameter is Mandatory.
+    * **secretKey   :** "secretKey" is another unique ID to work with WEB2SMS API, this parameter is also Mandatory.
+    * **messages    :** The "messages" is your actual SMS. You can define one message to be send as SMS, or define a **list of messages** to be send to your destination. As is shown in above example, any message of the list is individual, and can have diffrent configuration, text content or even send in diffrent time.
+    
+       * **sender           :** The "sender" is the actual number, what will sending the SMS to the destination phone number. The sender is an optional parameter, and the phone number on destination will be apear as what is defined in the Platform. if you have several predefined number in the platform, so you can pickup one of them as SMS sender. 
 
+       * **recipient        :** The "recipient" is the actual phone number of the SMS destination. This is a mandatory parameter.
+       * **body             :** The "body" is the actual content of the SMS. The "body" is a mandatory parameter.
+       * **scheduleDatetime :** To set the **date & time** of SMS sending. By setting this option you will be able to define one / set of SMS  to be sent in any interval of time in the future . The format of this parameter is like : **Y-m-d H:i:s** as Ex. **2021-12-01 08:59:30**  . this parameter is optional.
+       * **validityDatetime :**  To set a expire date & time for SMS sending. This is an optional parameter.
+       * **callbackUrl      :** The "callBackUrl", is an URL from your website to sending the feedback for each individual SMS  after SMS is send to the destination, to be informed about each individual SMS. This is an optional parameter.
+       * **userData         :** "userData" is an string given by you, to be used in the reports generated in the WEB2SMS platform. this option is helping you to categorize the informations. As example if you sending to many SMS for diffrent events, you can choese a **event title** as **userData** to be apear in the reports  
+      * **visibleMessage    :** The "visibleMessage" option is to Hide & Show the SMS content in WEB2SMS platform, to protect the sensitive Data . you can set this parameter as **TRUE** | **FALSE**. as defulte the SMS content is apearing in the platform. this parameter is optional.
 
 ### Error codes defination
 
