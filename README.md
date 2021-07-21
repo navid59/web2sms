@@ -8,11 +8,8 @@
 The WEB2SMS PHP library provides easy access to the send SMS via WEB2SMS API from any
 applications written in the PHP language.
 
-## Requirements
-PHP 5.7.0 and later.
-
 ## Compatibility
-PHP 8.0.8
+PHP 5.7.0 - 8.0.8
 
 ## Installation 
 
@@ -22,8 +19,11 @@ You can install the library via [Composer](http://getcomposer.org/). Run the fol
     composer web2sms
 ```
 
-### API URL
-<https://www.web2sms.ro/prepaid/message/>
+### URLs
+* **WEB2SMS platform** : <https://www.web2sms.ro/>
+* **POSTPAID endpoint** : <https://www.web2sms.ro/send/message/>
+* **PREPAID endpoint**  : <https://www.web2sms.ro/prepaid/message/>
+
 
 
 ### Actions
@@ -31,7 +31,8 @@ You can install the library via [Composer](http://getcomposer.org/). Run the fol
         
     To send one / a set of **SMS** ,
 
-    * **Action URL:** /prepaid/message/
+    * **Prepaid action URL :** /prepaid/message/
+    * **Postpaid action URL:** /send/message/
     * **Method:** `POST`    
     
         

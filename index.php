@@ -8,9 +8,9 @@ use Web2sms\sendSMS;
 
 $sendSMS = new sendSMS();
 
-$sender->accountType = 'postpaid';                                                  // postpaid | prepaid
+$sendSMS->accountType = 'prepaid';                                                  // postpaid | prepaid
 $sendSMS->apiKey     = 'YOUR_API_KEY_HERE_._YOU_HAVE_IT_FROM_WEB2SMS_PLATFORM';
-$sendSMS->secretKey  = 'YOUR_API_KEY_HERE_._YOU_HAVE_IT_FROM_WEB2SMS_PLATFORM';
+$sendSMS->secretKey  = 'YOUR_SECRET_KEY_HERE_._YOU_HAVE_IT_FROM_WEB2SMS_PLATFORM';
 
 $sendSMS->messages[]  = [
                     'sender'            => null,                                    // who send the SMS             // Optional

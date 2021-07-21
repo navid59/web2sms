@@ -55,7 +55,7 @@ class SendSMS extends Web2sms{
             $message->scheduleDatetime = (isset($msgItem['scheduleDatetime'])  && !empty($msgItem['scheduleDatetime'])) ? strtotime($msgItem['scheduleDatetime']) : '' ;
             $message->validityDatetime = (isset($msgItem['validityDatetime'])  && !empty($msgItem['validityDatetime'])) ? strtotime($msgItem['validityDatetime']) : '' ;
             $message->callbackUrl = (isset($msgItem['callbackUrl'])  && !empty($msgItem['callbackUrl'])) ? $msgItem['callbackUrl'] : '' ;
-            $message->userData = (isset($msgItem['userData'])  && !empty($msgItem['userData'])) ? $msgItem['userData'] : '' ;
+            $message->userData = (isset($msgItem['userData'])  && !empty($msgItem['userData'])) ? $msgItem['userData'] : 'Web2sms Composer' ;
             $message->visibleMessage = (isset($msgItem['visibleMessage'])  && !empty($msgItem['visibleMessage'])) ? $msgItem['visibleMessage'] : '' ;
             $message->nonce = time();
 

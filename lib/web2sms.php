@@ -2,6 +2,7 @@
 namespace Web2sms;
 
 abstract class Web2sms {    
+    const SMS_PLATFORM_URL            = "https://www.web2sms.ro";        // Mandatory 
     const SMS_METHOD                  = "POST";                          // Mandatory 
     const SMS_URL_PREPAIID            = "/prepaid/message";              // Mandatory
     const SMS_URL_POSTPAID            = "/send/message";                 // Mandatory
@@ -20,10 +21,10 @@ abstract class Web2sms {
     public function sendRequest($smsItem) {
        switch($this->accountType) {
         case 'postpaid':
-            $selectedEndpointURL = self::SMS_URL_PREPAIID;
+            $selectedEndpointURL = self::SMS_URL_POSTPAID;
             break;
         case 'prepaid' :
-            $selectedEndpointURL = self::SMS_URL_POSTPAID;
+            $selectedEndpointURL = self::SMS_URL_PREPAIID;
             break;
         default:
             $selectedEndpointURL = self::SMS_URL_PREPAIID;
@@ -36,24 +37,23 @@ abstract class Web2sms {
        $signature = hash('sha512', $string);
 
        $data = array(
-        "apiKey" => $this->apiKey,
-        "sender" => $smsItem->sender,
-        "recipient" => $smsItem->recipient,
-        "message" => $smsItem->body,
-        "scheduleDatetime" => $smsItem->scheduleDatetime,
-        "validityDatetime" => $smsItem->validityDatetime,
-        "callbackUrl" => $smsItem->callbackUrl,
-        "userData" => "",
-        "visibleMessage" => $smsItem->visibleMessage,
-        "nonce" => $smsItem->nonce);
+        "apiKey"            => $this->apiKey,
+        "sender"            => $smsItem->sender,
+        "recipient"         => $smsItem->recipient,
+        "message"           => $smsItem->body,
+        "scheduleDatetime"  => $smsItem->scheduleDatetime,
+        "validityDatetime"  => $smsItem->validityDatetime,
+        "callbackUrl"       => $smsItem->callbackUrl,
+        "userData"          => $smsItem->userData,
+        "visibleMessage"    => $smsItem->visibleMessage,
+        "nonce"             => $smsItem->nonce);
 
 
-        $url = 'https://www.web2sms.ro/prepaid/message'; // Prepaid
-        // $url = 'https://www.web2sms.ro/send/message'; // Post Paied
+        $url = self::SMS_PLATFORM_URL.$selectedEndpointURL; // Endpoint URL
+
         $ch = curl_init($url);
         
         $payload = json_encode($data); // json DATA
-        // die($payload);
 
         // Set to include the header in the output.
         curl_setopt($ch, CURLOPT_HEADER, true);
