@@ -1,4 +1,5 @@
 <?php
+namespace Web2sms;
 require_once('lib/web2sms.php');
 
 class Validate extends Web2sms{
